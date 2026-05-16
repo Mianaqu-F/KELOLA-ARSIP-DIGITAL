@@ -1,0 +1,367 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body, html {
+    background: #eaf4f2 !important;
+    font-family: 'Inter', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── NUKE FILAMENT WRAPPERS ── */
+.fi-simple-layout,
+.fi-simple-layout-content,
+.fi-simple-page,
+[class^="fi-simple"],
+[class*=" fi-simple"],
+.fi-simple-layout > div,
+.fi-simple-layout-content > div {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    border-radius: 0 !important;
+}
+.fi-simple-layout::before,
+.fi-simple-layout::after,
+.fi-simple-layout-content::before,
+.fi-simple-layout-content::after { display: none !important; }
+
+.fi-simple-layout-logo,
+.fi-simple-layout-heading,
+.fi-simple-layout-subheading,
+.fi-simple-layout > header,
+.fi-simple-layout > div > header,
+[class*="fi-simple-layout"] header,
+[class*="fi-simple-layout"] h1,
+[class*="fi-simple-layout"] h2,
+.fi-simple-page > header { display: none !important; }
+
+/* ── PAGE & CARD ── */
+.login-page {
+    position: fixed; inset: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+}
+
+.login-card {
+    background: #ffffff;
+    border: 1px solid rgba(26,122,110,0.12);
+    border-radius: 22px;
+    padding: 2.8rem 2.6rem 2.4rem;
+    width: 100%; max-width: 420px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 2px 8px rgba(26,122,110,0.06),
+        0 16px 48px rgba(26,122,110,0.09),
+        0 32px 80px rgba(0,0,0,0.06);
+    animation: cardIn .6s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Garis atas — overflow:hidden memotong sesuai border-radius */
+.login-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #0f5f55 0%, #1a7a6e 40%, #2d9e8f 70%, #1a7a6e 100%);
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.98); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ── HEADER ── */
+.login-header { text-align: center; margin-bottom: 1.8rem; }
+
+.login-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 56px; height: 56px; border-radius: 16px;
+    background: linear-gradient(135deg, #0f5f55, #2d9e8f);
+    box-shadow: 0 6px 20px rgba(26,122,110,0.28);
+    margin-bottom: 1.1rem;
+}
+.login-icon svg { width: 24px; height: 24px; color: #fff; }
+
+.login-title {
+    font-size: 1.55rem; font-weight: 700;
+    color: #0d2e29; letter-spacing: -.025em;
+    margin-bottom: .3rem;
+}
+.login-subtitle { font-size: .82rem; color: #94b5b0; font-weight: 400; }
+
+/* ── DIVIDER ── */
+.login-divider {
+    display: flex; align-items: center; gap: .8rem;
+    margin: 0 0 1.8rem;
+}
+.login-divider::before,
+.login-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: rgba(26,122,110,0.12);
+}
+.login-divider span {
+    font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: #aecfcb; white-space: nowrap;
+}
+
+/* ── LABELS ── */
+.login-card label,
+.login-card .fi-label,
+.login-card .fi-fo-field-wrp label,
+.login-card .fi-fo-field-wrp > div > label,
+.login-card [class*="fi-fo"] label,
+.login-card .fi-fo-field-wrp-label {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #1e4a44 !important;
+    -webkit-text-fill-color: #1e4a44 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: none !important;
+    margin-bottom: 0.4rem !important;
+    background: transparent !important;
+}
+
+/* Required star */
+.login-card label sup,
+.login-card .fi-fo-field-wrp-label-required-indicator {
+    color: #e05252 !important;
+    -webkit-text-fill-color: #e05252 !important;
+}
+
+/* ── INPUT WRAPPER (handles border + focus ring) ── */
+.login-card .fi-input-wrp {
+    display: flex !important;
+    align-items: center !important;
+    background: #f8fefe !important;
+    border: 1.5px solid rgba(26,122,110,0.22) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    transition: border-color .2s, box-shadow .2s, background .2s !important;
+    outline: none !important;
+}
+.login-card .fi-input-wrp:focus-within {
+    background: #ffffff !important;
+    border-color: #1a7a6e !important;
+    box-shadow: 0 0 0 3px rgba(26,122,110,0.14) !important;
+}
+
+/* Actual input — no own border/shadow/outline */
+.login-card input[type="email"],
+.login-card input[type="password"],
+.login-card input[type="text"] {
+    flex: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #0d2e29 !important;
+    -webkit-text-fill-color: #0d2e29 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.9rem !important;
+    padding: 0.72rem 1rem !important;
+    width: 100% !important;
+
+    /* HAPUS focus ring oranye bawaan browser */
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+.login-card input::placeholder { color: #b0d0cc !important; -webkit-text-fill-color: #b0d0cc !important; }
+
+/* ── ICON MATA ── */
+.login-card .fi-input-wrp-suffix {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 13px 0 0 !important;
+}
+
+.login-card .fi-input-wrp-suffix button {
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    color: #7ab5ae !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    transition: color .15s, background .15s !important;
+}
+.login-card .fi-input-wrp-suffix button:hover {
+    color: #1a7a6e !important;
+    background: rgba(26,122,110,0.07) !important;
+}
+.login-card .fi-input-wrp-suffix button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.login-card .fi-input-wrp-suffix button svg {
+    width: 18px !important;
+    height: 18px !important;
+    display: block !important;
+}
+
+/* Sembunyikan button yang di-hide Alpine (x-show=false = display:none inline) */
+/* Biarkan Alpine yang handle, kita tidak override display sama sekali */
+
+/* ── CHECKBOX ── */
+.login-card .fi-fo-field-wrp .fi-checkbox-input,
+.login-card input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    display: inline-block !important;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    border-radius: 5px !important;
+    border: 2px solid rgba(26,122,110,0.35) !important;
+    background: #ffffff !important;
+    cursor: pointer !important;
+    position: relative !important;
+    vertical-align: middle !important;
+    transition: background .15s, border-color .15s !important;
+    outline: none !important;
+    box-shadow: none !important;
+    /* Reset semua properti bawaan */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+.login-card .fi-fo-field-wrp .fi-checkbox-input:checked,
+.login-card input[type="checkbox"]:checked {
+    background-color: #1a7a6e !important;
+    border-color: #1a7a6e !important;
+}
+
+/* Centang via ::after — lebih reliable daripada background-image */
+.login-card .fi-fo-field-wrp .fi-checkbox-input:checked::after,
+.login-card input[type="checkbox"]:checked::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 1px !important;
+    left: 4px !important;
+    width: 6px !important;
+    height: 10px !important;
+    border: 2px solid #ffffff !important;
+    border-top: none !important;
+    border-left: none !important;
+    transform: rotate(45deg) !important;
+    display: block !important;
+}
+
+/* Focus pada checkbox — teal, bukan oranye */
+.login-card input[type="checkbox"]:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(26,122,110,0.18) !important;
+}
+
+/* Label checkbox / remember me */
+.login-card [class*="check"] label,
+.login-card [class*="checkbox"] label,
+.login-card .fi-checkbox label {
+    color: #3d6b65 !important;
+    -webkit-text-fill-color: #3d6b65 !important;
+    font-size: 0.82rem !important;
+    font-weight: 400 !important;
+    background: transparent !important;
+}
+
+/* ── ERRORS ── */
+.login-card [class*="error"],
+.login-card p[class*="error"],
+.login-card .fi-fo-field-wrp-error-message {
+    font-size: .75rem !important;
+    color: #d64040 !important;
+    -webkit-text-fill-color: #d64040 !important;
+    margin-top: .25rem !important;
+}
+
+/* ── FORM LAYOUT ── */
+.login-card .fi-form,
+.login-card form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.2rem !important;
+}
+.login-card .fi-fo-field-wrp {
+    display: flex !important;
+    flex-direction: column !important;
+}
+/* Sembunyikan tombol submit default Filament */
+.login-card .fi-btn,
+.login-card .fi-form-actions button { display: none !important; }
+
+/* ── TOMBOL SUBMIT ── */
+.login-btn {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.84rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #0f5f55 0%, #1a7a6e 55%, #2d9e8f 100%);
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    box-shadow: 0 4px 18px rgba(26,122,110,0.30);
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+
+    /* Hapus outline/ring oranye */
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+.login-btn::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(rgba(255,255,255,.10), transparent);
+    pointer-events: none;
+}
+/* Focus state yang benar — teal */
+.login-btn:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(26,122,110,0.30), 0 4px 18px rgba(26,122,110,0.30) !important;
+}
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(26,122,110,0.38) !important;
+}
+.login-btn:active { transform: translateY(0); }
+
+/* ── FOOTER ── */
+.login-footer {
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(26,122,110,0.08);
+    text-align: center;
+    font-size: .70rem;
+    color: #aecfcb;
+    letter-spacing: .02em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+    .login-card { padding: 2.2rem 1.6rem 1.8rem; border-radius: 18px; }
+    .login-title { font-size: 1.35rem; }
+}
