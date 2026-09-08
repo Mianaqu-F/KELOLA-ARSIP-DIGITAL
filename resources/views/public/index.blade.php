@@ -183,11 +183,10 @@
 
             @php
                 $badgeColorTerbaru = match($archive->sifat_surat ?? 'biasa') {
-                    'rahasia'        => '#eab308',
-                    'sangat_rahasia' => '#7f1d1d',
+                    'rahasia'        => '#7f1d1d',
                     default          => 'var(--navy-600)',
                 };
-                $isRahasiaTerbaru = in_array($archive->sifat_surat ?? 'biasa', ['rahasia', 'sangat_rahasia']);
+                $isRahasiaTerbaru = in_array($archive->sifat_surat ?? 'biasa', ['rahasia']);
             @endphp
 
             <div class="col-md-4">
@@ -336,11 +335,10 @@
 
                     @php
                         $badgeColor = match($archive->sifat_surat ?? 'biasa') {
-                            'rahasia'        => '#eab308',
-                            'sangat_rahasia' => '#7f1d1d',
+                            'rahasia'        => '#7f1d1d',
                             default          => 'var(--navy-600)',
                         };
-                        $isRahasia = in_array($archive->sifat_surat ?? 'biasa', ['rahasia', 'sangat_rahasia']);
+                        $isRahasia = in_array($archive->sifat_surat ?? 'biasa', ['rahasia']);
                     @endphp
 
                     <div class="mb-3">

@@ -109,7 +109,6 @@ class ArchiveResource extends Resource
                 ->options([
                     'biasa' => 'Biasa',
                     'rahasia' => 'Rahasia',
-                    'sangat_rahasia' => 'Sangat Rahasia',
                 ])
                 ->required()
                 ->native(false),

@@ -88,6 +88,6 @@ class RetentionRuleSeeder extends Seeder
             DB::table('retention_rules')->insert($chunk);
         }
 
-        $this->command->info('✅ ' . count($rules) . ' retention rules berhasil dimasukkan.');
+        $this->command?->info('✅ ' . count($rules) . ' retention rules berhasil dimasukkan.');
     }
 }

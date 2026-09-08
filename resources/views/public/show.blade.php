@@ -72,8 +72,7 @@
                                 @php
                                     $cls = $archive->sifat_surat ?? 'biasa';
                                     $clsColor = match($cls) {
-                                        'rahasia'        => '#eab308',
-                                        'sangat_rahasia' => '#7f1d1d',
+                                        'rahasia'        => '#7f1d1d',
                                         default          => 'var(--teal-600)',
                                     };
                                 @endphp
