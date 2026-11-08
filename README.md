@@ -273,4 +273,6 @@ php artisan test
 
 ## Lisensi
 
-[Tentukan lisensi, atau hapus bagian ini bila repositori bersifat privat.]
+## Lisensi
+
+Proyek ini dilisensikan di bawah [MIT License](LICENSE).
