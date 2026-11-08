@@ -1,6 +1,6 @@
 # Sistem Informasi Arsip Digital
 
-Sistem informasi arsip digital dengan **automatic retention rules** dan **alur persetujuan terstruktur** untuk instansi pemerintah.
+Sistem informasi arsip digital dengan **automatic retention rules** dan **alur persetujuan terstruktur**
 
 Sistem ini menentukan masa retensi arsip secara otomatis dari kategori dan jenis dokumen, menghubungkan status retensi dengan status persetujuan, dan menyediakan portal publik untuk arsip yang telah disetujui.
 
