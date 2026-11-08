@@ -15,3 +15,6 @@ Route::get('/arsip/{archive}/download',
 
 Route::post('/arsip/verify-token', [PublicArchiveController::class, 'verifyToken'])
     ->name('public.verifyToken');
+
+Route::get('/admin/archives/{archive}/preview', [App\Http\Controllers\Admin\Controller::class, 'preview'])
+    ->name('admin.archives.preview');

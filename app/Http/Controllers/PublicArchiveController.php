@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Archive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PublicArchiveController extends Controller
 {
@@ -58,7 +59,7 @@ class PublicArchiveController extends Controller
 
     public function show(Archive $archive)
     {
-        if (in_array($archive->sifat_surat, ['rahasia', 'sangat_rahasia'])) {
+        if (in_array($archive->sifat_surat, ['rahasia'])) {
             $token = request('token');
             if ($token !== env('ARSIP_RAHASIA_TOKEN')) {
                 abort(403, 'Akses ditolak.');
@@ -81,7 +82,10 @@ class PublicArchiveController extends Controller
             abort(404);
         }
 
-        return Storage::download($archive->file, basename($archive->file));
+        $extension = pathinfo($archive->file, PATHINFO_EXTENSION);
+        $namaFile = Str::slug($archive->judul) . '.' . $extension;
+
+        return Storage::download($archive->file, $namaFile);
     }
 
     public function verifyToken(Request $request)

@@ -36,39 +36,42 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive forCurrentUser()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereApprovalStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereDeskripsi($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereFile($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereFileSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereFileType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereFinalAction($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereJenisDokumen($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereJudul($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereKategori($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereNomorDokumen($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereOpd($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereRejectionNote($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereRetentionEndDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereRetentionStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereRetentionYears($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereSifatSurat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereTahun($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereTanggalSurat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive withTrashed(bool $withTrashed = true)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Archive withoutTrashed()
+ * @property-read User $user
+ * @method static Builder<static>|Archive approved()
+ * @method static Builder<static>|Archive forCurrentUser()
+ * @method static Builder<static>|Archive newModelQuery()
+ * @method static Builder<static>|Archive newQuery()
+ * @method static Builder<static>|Archive onlyTrashed()
+ * @method static Builder<static>|Archive query()
+ * @method static Builder<static>|Archive whereApprovalStatus($value)
+ * @method static Builder<static>|Archive whereCreatedAt($value)
+ * @method static Builder<static>|Archive whereDeletedAt($value)
+ * @method static Builder<static>|Archive whereDeskripsi($value)
+ * @method static Builder<static>|Archive whereFile($value)
+ * @method static Builder<static>|Archive whereFileSize($value)
+ * @method static Builder<static>|Archive whereFileType($value)
+ * @method static Builder<static>|Archive whereFinalAction($value)
+ * @method static Builder<static>|Archive whereId($value)
+ * @method static Builder<static>|Archive whereJenisDokumen($value)
+ * @method static Builder<static>|Archive whereJudul($value)
+ * @method static Builder<static>|Archive whereKategori($value)
+ * @method static Builder<static>|Archive whereNomorDokumen($value)
+ * @method static Builder<static>|Archive whereOpd($value)
+ * @method static Builder<static>|Archive whereRejectionNote($value)
+ * @method static Builder<static>|Archive whereRetentionEndDate($value)
+ * @method static Builder<static>|Archive whereRetentionStatus($value)
+ * @method static Builder<static>|Archive whereRetentionYears($value)
+ * @method static Builder<static>|Archive whereSifatSurat($value)
+ * @method static Builder<static>|Archive whereTahun($value)
+ * @method static Builder<static>|Archive whereTanggalSurat($value)
+ * @method static Builder<static>|Archive whereUpdatedAt($value)
+ * @method static Builder<static>|Archive whereUserId($value)
+ * @method static Builder<static>|Archive withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|Archive withoutTrashed()
+ * @mixin \Eloquent
  */
-	class Archive extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	class IdeHelperArchive {}
 }
 
 namespace App\Models{
@@ -90,8 +93,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RetentionRule whereKategori($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RetentionRule whereRetentionYears($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RetentionRule whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class RetentionRule extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	class IdeHelperRetentionRule {}
 }
 
 namespace App\Models{
@@ -102,12 +107,12 @@ namespace App\Models{
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $role
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $role
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
@@ -131,7 +136,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
+ * @mixin \Eloquent
  */
-	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
+	#[\AllowDynamicProperties]
+	class IdeHelperUser {}
 }
 

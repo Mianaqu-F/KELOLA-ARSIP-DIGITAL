@@ -7,22 +7,30 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class LatestArsip extends TableWidget
 {
     protected static ?string $heading = 'Arsip Terbaru';
     protected int | string | array $columnSpan = 'full';
 
+    protected static function isSuperAdmin(): bool
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && $user->hasRole('super_admin');
+    }
+
     public function table(Table $table): Table
     {
+         /** @var \Illuminate\Database\Eloquent\Builder $query */
+         $query = Archive::query()
+            ->forCurrentUser()
+            ->latest()
+            ->limit(5);
+
         return $table
-            ->query(
-                Archive::query()
-                    ->forCurrentUser()
-                    ->latest()
-                    ->limit(5)
-            )
+            ->query($query)
             ->columns([
                 Tables\Columns\TextColumn::make('judul')
                     ->label('Judul')
@@ -35,7 +43,7 @@ class LatestArsip extends TableWidget
                     ->label('Petugas')
                     ->badge()
                     ->color('info')
-                    ->visible(fn () => Auth::user()->hasRole('super_admin')),
+                    ->visible(fn () => static::isSuperAdmin()),
 
                 Tables\Columns\TextColumn::make('kategori')
                     ->badge()
@@ -76,7 +84,7 @@ class LatestArsip extends TableWidget
                 Tables\Columns\TextColumn::make('file')
                     ->label('Dokumen')
                     ->formatStateUsing(fn () => '📄 Lihat File')
-                    ->url(fn ($record) => Storage::url($record->file))
+                    ->url(fn ($record) => route('admin.archives.preview', $record))
                     ->openUrlInNewTab()
                     ->color('primary'),
 

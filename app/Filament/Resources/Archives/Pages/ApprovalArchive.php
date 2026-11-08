@@ -148,11 +148,12 @@ class ApprovalArchive extends ListRecords
                     ->label('Setujui')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->visible(fn ($record) =>
-                        Auth::user() instanceof \App\Models\User &&
-                        Auth::user()->hasRole('super_admin') &&
-                        $record->approval_status === 'pending'
-                    )
+                    ->visible(function ($record) {
+                        $user = Auth::user();
+                        return $user instanceof \App\Models\User &&
+                            $user->hasRole('super_admin') &&
+                            $record->approval_status === 'pending';
+                    })
                     ->requiresConfirmation()
                     ->modalIcon('heroicon-o-check-circle')
                     ->modalIconColor('success')
@@ -174,11 +175,12 @@ class ApprovalArchive extends ListRecords
                     ->label('Tolak')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn ($record) =>
-                        Auth::user() instanceof \App\Models\User &&
-                        Auth::user()->hasRole('super_admin') &&
-                        $record->approval_status === 'pending'
-                    )
+                    ->visible(function ($record) {
+                        $user = Auth::user();
+                        return $user instanceof \App\Models\User &&
+                            $user->hasRole('super_admin') &&
+                            $record->approval_status === 'pending';
+                    })
                     ->modalIcon('heroicon-o-x-circle')
                     ->modalIconColor('danger')
                     ->modalHeading('Tolak Arsip Ini?')

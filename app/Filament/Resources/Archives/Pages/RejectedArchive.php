@@ -8,7 +8,6 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class RejectedArchive extends ListRecords
 {
@@ -70,7 +69,7 @@ class RejectedArchive extends ListRecords
                 Tables\Columns\TextColumn::make('file')
                     ->label('Dokumen')
                     ->formatStateUsing(fn () => '📄 Lihat File')
-                    ->url(fn ($record) => Storage::url($record->file))
+                    ->url(fn ($record) => route('admin.archives.preview', $record))
                     ->openUrlInNewTab()
                     ->color('primary'),
 
@@ -106,6 +105,17 @@ class RejectedArchive extends ListRecords
                     ->label('Diunggah')
                     ->since()
                     ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->recordActions([
+                \Filament\Actions\EditAction::make()
+                    ->visible(fn ($record) => $record->user_id === Auth::id()),
+
+                \Filament\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->visible(function () {
+                        $user = Auth::user();
+                        return $user instanceof \App\Models\User && $user->hasRole('super_admin');
+                    }),
             ])
             ->defaultSort('created_at', 'desc')
             ->striped();

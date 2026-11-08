@@ -7,9 +7,21 @@ use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Illuminate\Support\Facades\Auth;
+use Rmsramos\Activitylog\ActivitylogPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
+    protected static function isSuperAdmin(): bool
+    {
+        $user = Auth::user();
+        return $user instanceof \App\Models\User && $user->hasRole('super_admin');
+    }
+
+    protected static function isPetugas(): bool
+    {
+        $user = Auth::user();
+        return $user instanceof \App\Models\User && $user->hasRole('petugas');
+    }
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -18,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->brandName('Sistem Arsip Digital')
             ->login(\App\Filament\Auth\Login::class)
+            ->databaseNotifications()
             ->resources([
                 \App\Filament\Resources\Archives\ArchiveResource::class,
             ])
@@ -29,20 +42,30 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\StatsOverview::class,
                 \App\Filament\Widgets\ArsipChart::class,
             ])
+            ->plugins([
+                ActivitylogPlugin::make()
+                    ->navigationGroup('Sistem')
+                    ->navigationSort(10)
+                    ->resource(\App\Filament\Resources\CustomActivitylogResource::class)
+                    ->authorize(function () {
+                        $user = Auth::user();
+                        return $user instanceof \App\Models\User && $user->hasRole('super_admin');
+                    }),
+            ])
             ->navigationItems([
                 NavigationItem::make('Menunggu Persetujuan')
                     ->url('/admin/archives/pending')
                     ->icon('heroicon-o-clock')
                     ->group('Arsip')
                     ->sort(2)
-                    ->visible(fn () => Auth::check() && Auth::user()->hasRole('super_admin')),
+                    ->visible(fn () => static::isSuperAdmin()),
 
                 NavigationItem::make('Menunggu Persetujuan')
                     ->url('/admin/archives/pending')
                     ->icon('heroicon-o-clock')
                     ->group('Arsip')
                     ->sort(2)
-                    ->visible(fn () => Auth::check() && Auth::user()->hasRole('petugas')),
+                    ->visible(fn () => static::isPetugas()),
 
                 NavigationItem::make('Disetujui')
                     ->url('/admin/archives/approved')

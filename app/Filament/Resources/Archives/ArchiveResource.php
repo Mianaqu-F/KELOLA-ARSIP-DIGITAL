@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Filament\Resources\Archives;
 
 use App\Models\Archive;
+use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -21,7 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Filament\Infolists\Components\TextEntry;
 
 class ArchiveResource extends Resource
 {
@@ -30,23 +30,35 @@ class ArchiveResource extends Resource
     protected static ?string $navigationLabel = 'Semua Arsip';
     protected static ?int $navigationSort = 1;
 
+    /**
+     * Helper terpusat untuk cek role super_admin.
+     * Menggunakan instanceof agar Intelephense mengenali tipe User
+     * dan tidak lagi menampilkan warning "Undefined method hasRole".
+     */
+    protected static function isSuperAdmin(): bool
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && $user->hasRole('super_admin');
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'Arsip';
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
     {
-        if (Auth::user()->hasRole('super_admin')) {
+        if (static::isSuperAdmin()) {
             return true;
         }
 
         return $record->user_id === Auth::id();
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
     {
-        if (Auth::user()->hasRole('super_admin')) {
+        if (static::isSuperAdmin()) {
             return true;
         }
 
@@ -73,6 +85,12 @@ class ArchiveResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
+            TextEntry::make('rejection_note_display')
+                ->label('⚠️ Catatan Penolakan dari Admin')
+                ->state(fn ($record) => $record?->rejection_note)
+                ->visible(fn ($record) => $record && $record->approval_status === 'rejected')
+                ->columnSpanFull(),
+
             TextInput::make('judul')
                 ->required()
                 ->maxLength(255),
@@ -217,14 +235,14 @@ class ArchiveResource extends Resource
                 TextColumn::make('file')
                     ->label('Dokumen')
                     ->formatStateUsing(fn () => '📄 Lihat File')
-                    ->url(fn ($record) => Storage::url($record->file))
+                    ->url(fn ($record) => route('admin.archives.preview', $record))
                     ->openUrlInNewTab()
                     ->color('primary'),
 
                 TextColumn::make('user.name')
                     ->label('Petugas')
                     ->toggleable(isToggledHiddenByDefault: false)
-                    ->visible(fn () => Auth::user()->hasRole('super_admin')),
+                    ->visible(fn () => static::isSuperAdmin()),
 
                 TextColumn::make('rejection_note')
                     ->label('Catatan Penolakan')
@@ -306,7 +324,7 @@ class ArchiveResource extends Resource
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn ($record) =>
-                        Auth::user()->hasRole('super_admin') &&
+                        static::isSuperAdmin() &&
                         $record->approval_status === 'pending'
                     )
                     ->requiresConfirmation()
@@ -325,7 +343,7 @@ class ArchiveResource extends Resource
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->visible(fn ($record) =>
-                        Auth::user()->hasRole('super_admin') &&
+                        static::isSuperAdmin() &&
                         $record->approval_status === 'pending'
                     )
                     ->schema([
@@ -347,7 +365,7 @@ class ArchiveResource extends Resource
 
                 EditAction::make()
                     ->visible(fn ($record) =>
-                        Auth::user()->hasRole('super_admin') ||
+                        static::isSuperAdmin() ||
                         $record->user_id === Auth::id()
                     ),
 
@@ -357,7 +375,7 @@ class ArchiveResource extends Resource
                     ->modalDescription('Data yang dihapus tidak dapat dikembalikan.')
                     ->modalSubmitActionLabel('Ya, Hapus')
                     ->visible(fn ($record) =>
-                        Auth::user()->hasRole('super_admin') ||
+                        static::isSuperAdmin() ||
                         $record->user_id === Auth::id()
                     ),
             ])

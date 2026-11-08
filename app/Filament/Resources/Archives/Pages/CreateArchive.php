@@ -54,11 +54,11 @@ class CreateArchive extends CreateRecord
     {
         $user = Auth::user();
 
-        if ($user?->isSuperAdmin()) {
+        if ($user instanceof \App\Models\User && $user->isSuperAdmin()) {
             return url('/admin/archives/approved');
         }
 
-        if ($user?->isPetugas()) {
+        if ($user instanceof \App\Models\User && $user->isPetugas()) {
             return url('/admin/archives/pending');
         }
 
